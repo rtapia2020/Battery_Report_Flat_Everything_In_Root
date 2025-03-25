@@ -126,7 +126,8 @@ def index():
                 return send_file(pdf_path, as_attachment=True)
                 return send_file(pdf_path, as_attachment=True)
 
-            output_path = os.path.join(app.config["UPLOAD_FOLDER"], "reporte_generado.html")
+            html_name = f"Reporte_Bateria-{data['computer_name']}-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.html"
+            output_path = os.path.join(app.config["UPLOAD_FOLDER"], html_name)
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(render_template("report.html", info=data, fecha=datetime.now().strftime("%d/%m/%Y %H:%M:%S")))
             return send_file(output_path, as_attachment=True)
