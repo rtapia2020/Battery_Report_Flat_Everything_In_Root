@@ -7,28 +7,23 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fff;
-      color: #333;
+      background-color: #121212;
+      color: #f5f5f5;
       margin: 40px;
     }
-    h1 {
-      color: #2c3e50;
-      border-bottom: 2px solid #2980b9;
-      padding-bottom: 10px;
-    }
-    h2 {
-      color: #2980b9;
+    h1, h2 {
+      color: #00bcd4;
     }
     .highlight {
-      background-color: #fff3cd;
-      padding: 5px;
+      background-color: #333;
+      padding: 10px;
       border-left: 5px solid #ffc107;
       margin: 15px 0;
     }
     .summary {
-      background-color: #d4edda;
+      background-color: #1b5e20;
       padding: 15px;
-      border-left: 5px solid #28a745;
+      border-left: 5px solid #81c784;
       margin-top: 30px;
     }
     .data-table {
@@ -37,12 +32,12 @@
       margin-top: 20px;
     }
     .data-table th, .data-table td {
-      border: 1px solid #ccc;
+      border: 1px solid #444;
       padding: 10px;
       text-align: left;
     }
     .data-table th {
-      background-color: #ecf0f1;
+      background-color: #212121;
     }
   </style>
 </head>
@@ -50,25 +45,36 @@
   <h1>Reporte de Estado de la Batería</h1>
   <p><strong>Fecha del análisis:</strong> {{ fecha }}</p>
 
-  <h2>Detalles del Reporte</h2>
+  <h2>Ficha Técnica del Equipo</h2>
+  <table class="data-table">
+    <tr><td>Nombre del equipo</td><td>{{ info.computer_name }}</td></tr>
+    <tr><td>Modelo</td><td>{{ info.system_product }}</td></tr>
+    <tr><td>BIOS</td><td>{{ info.bios }}</td></tr>
+    <tr><td>Versión del sistema operativo</td><td>{{ info.os_build }}</td></tr>
+    <tr><td>Rol de plataforma</td><td>{{ info.platform_role }}</td></tr>
+    <tr><td>Connected Standby</td><td>{{ info.connected_standby }}</td></tr>
+    <tr><td>Fecha del reporte</td><td>{{ info.report_time }}</td></tr>
+  </table>
+
+  <h2>Detalles del Reporte de Batería</h2>
   <table class="data-table">
     <tr><th>Parámetro</th><th>Valor</th></tr>
-    <tr><td>Capacidad de diseño</td><td>{{ info.design_capacity or 'No disponible' }}</td></tr>
-    <tr><td>Capacidad actual de carga completa</td><td>{{ info.full_charge_capacity or 'No disponible' }}</td></tr>
-    <tr><td>Conteo de ciclos</td><td>{{ info.cycle_count or 'No disponible' }}</td></tr>
+    <tr><td>Nombre de la batería</td><td>{{ info.battery_name }}</td></tr>
+    <tr><td>Fabricante</td><td>{{ info.battery_manufacturer }}</td></tr>
+    <tr><td>Serial</td><td>{{ info.battery_serial }}</td></tr>
+    <tr><td>Química</td><td>{{ info.battery_chemistry }}</td></tr>
+    <tr><td>Capacidad de diseño</td><td>{{ info.design_capacity }}</td></tr>
+    <tr><td>Capacidad de carga completa</td><td>{{ info.full_charge_capacity }}</td></tr>
+    <tr><td>Conteo de ciclos</td><td>{{ info.cycle_count }}</td></tr>
   </table>
 
   <div class="highlight">
-    ⚠️ <strong>Atención:</strong> La capacidad máxima de la batería ha disminuido significativamente.
-  </div>
-
-  <div class="highlight">
-    ⚠️ <strong>Observación:</strong> El número de ciclos puede no estar disponible según el dispositivo.
+    ⚠️ <strong>Atención:</strong> Revisa el conteo de ciclos y capacidad actual. Si hay pérdida significativa, considera reemplazo.
   </div>
 
   <div class="summary">
     <h2>Resumen</h2>
-    <p>Este reporte muestra el estado actual de la batería. Si la capacidad ha disminuido considerablemente, se recomienda considerar el reemplazo si hay problemas de duración.</p>
+    <p>Este análisis resume el estado de salud de la batería y el equipo. Puedes usar este reporte como respaldo técnico o para diagnóstico con soporte.</p>
   </div>
 </body>
 </html>

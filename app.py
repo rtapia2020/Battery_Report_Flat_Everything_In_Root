@@ -13,21 +13,69 @@ def analizar_reporte(ruta_archivo):
     with open(ruta_archivo, "r", encoding="utf-8") as file:
         soup = BeautifulSoup(file, "html.parser")
 
-    battery_info = soup.find_all("table")[1]
-    rows = battery_info.find_all("tr")
+    info = {
+        "design_capacity": "",
+        "full_charge_capacity": "",
+        "cycle_count": "",
+        "computer_name": "",
+        "system_product": "",
+        "bios": "",
+        "os_build": "",
+        "platform_role": "",
+        "connected_standby": "",
+        "report_time": "",
+        "battery_name": "",
+        "battery_manufacturer": "",
+        "battery_serial": "",
+        "battery_chemistry": ""
+    }
 
-    info = {}
-    for row in rows:
-        cells = row.find_all("td")
-        if len(cells) == 2:
-            label = cells[0].text.strip().lower()
-            value = cells[1].text.strip()
-            if "design capacity" in label:
-                info["design_capacity"] = value
-            elif "full charge capacity" in label:
-                info["full_charge_capacity"] = value
-            elif "cycle count" in label:
-                info["cycle_count"] = value
+    # Info general
+    tables = soup.find_all("table")
+    if len(tables) > 0:
+        rows = tables[0].find_all("tr")
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) == 2:
+                label = cells[0].text.strip().lower()
+                value = cells[1].text.strip()
+                if "computer name" in label:
+                    info["computer_name"] = value
+                elif "system product name" in label:
+                    info["system_product"] = value
+                elif "bios" in label:
+                    info["bios"] = value
+                elif "os build" in label:
+                    info["os_build"] = value
+                elif "platform role" in label:
+                    info["platform_role"] = value
+                elif "connected standby" in label:
+                    info["connected_standby"] = value
+                elif "report time" in label:
+                    info["report_time"] = value
+
+    # Installed battery info
+    if len(tables) > 1:
+        rows = tables[1].find_all("tr")
+        for row in rows:
+            cells = row.find_all("td")
+            if len(cells) == 2:
+                label = cells[0].text.strip().lower()
+                value = cells[1].text.strip()
+                if "name" == label:
+                    info["battery_name"] = value
+                elif "manufacturer" == label:
+                    info["battery_manufacturer"] = value
+                elif "serial number" in label:
+                    info["battery_serial"] = value
+                elif "chemistry" in label:
+                    info["battery_chemistry"] = value
+                elif "design capacity" in label:
+                    info["design_capacity"] = value
+                elif "full charge capacity" in label:
+                    info["full_charge_capacity"] = value
+                elif "cycle count" in label:
+                    info["cycle_count"] = value
 
     return info
 
