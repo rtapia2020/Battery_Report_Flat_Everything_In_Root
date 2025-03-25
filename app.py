@@ -120,8 +120,10 @@ def index():
 
             if export_pdf:
                 rendered = render_template("report.html", info=data, fecha=datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-                pdf_path = os.path.join(app.config["UPLOAD_FOLDER"], "reporte_bateria.pdf")
+                pdf_name = f"Reporte_Bateria-{data['computer_name']}-{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.pdf"
+                pdf_path = os.path.join(app.config["UPLOAD_FOLDER"], pdf_name)
                 pdfkit.from_string(rendered, pdf_path)
+                return send_file(pdf_path, as_attachment=True)
                 return send_file(pdf_path, as_attachment=True)
 
             output_path = os.path.join(app.config["UPLOAD_FOLDER"], "reporte_generado.html")
