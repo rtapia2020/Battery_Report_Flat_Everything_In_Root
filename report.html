@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte de Estado de Batería</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      color: #333;
+      margin: 40px;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 2px solid #2980b9;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #2980b9;
+    }
+    .highlight {
+      background-color: #fff3cd;
+      padding: 5px;
+      border-left: 5px solid #ffc107;
+      margin: 15px 0;
+    }
+    .summary {
+      background-color: #d4edda;
+      padding: 15px;
+      border-left: 5px solid #28a745;
+      margin-top: 30px;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .data-table th, .data-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    .data-table th {
+      background-color: #ecf0f1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Reporte de Estado de la Batería</h1>
+  <p><strong>Fecha del análisis:</strong> {{ fecha }}</p>
+
+  <h2>Detalles del Reporte</h2>
+  <table class="data-table">
+    <tr><th>Parámetro</th><th>Valor</th></tr>
+    <tr><td>Capacidad de diseño</td><td>{{ info.design_capacity or 'No disponible' }}</td></tr>
+    <tr><td>Capacidad actual de carga completa</td><td>{{ info.full_charge_capacity or 'No disponible' }}</td></tr>
+    <tr><td>Conteo de ciclos</td><td>{{ info.cycle_count or 'No disponible' }}</td></tr>
+  </table>
+
+  <div class="highlight">
+    ⚠️ <strong>Atención:</strong> La capacidad máxima de la batería ha disminuido significativamente.
+  </div>
+
+  <div class="highlight">
+    ⚠️ <strong>Observación:</strong> El número de ciclos puede no estar disponible según el dispositivo.
+  </div>
+
+  <div class="summary">
+    <h2>Resumen</h2>
+    <p>Este reporte muestra el estado actual de la batería. Si la capacidad ha disminuido considerablemente, se recomienda considerar el reemplazo si hay problemas de duración.</p>
+  </div>
+</body>
+</html>
