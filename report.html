@@ -14,17 +14,18 @@
     h1, h2 {
       color: #00bcd4;
     }
+    .highlight, .summary {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
     .highlight {
       background-color: #333;
-      padding: 10px;
       border-left: 5px solid #ffc107;
-      margin: 15px 0;
     }
     .summary {
       background-color: #1b5e20;
-      padding: 15px;
       border-left: 5px solid #81c784;
-      margin-top: 30px;
     }
     .data-table {
       width: 100%;
@@ -38,6 +39,21 @@
     }
     .data-table th {
       background-color: #212121;
+    }
+    .bar-container {
+      background-color: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 25px;
+      margin: 10px 0;
+    }
+    .bar {
+      height: 100%;
+      background-color: #00c853;
+      text-align: center;
+      line-height: 25px;
+      color: #000;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -58,23 +74,28 @@
 
   <h2>Detalles del Reporte de Batería</h2>
   <table class="data-table">
-    <tr><th>Parámetro</th><th>Valor</th></tr>
     <tr><td>Nombre de la batería</td><td>{{ info.battery_name }}</td></tr>
     <tr><td>Fabricante</td><td>{{ info.battery_manufacturer }}</td></tr>
     <tr><td>Serial</td><td>{{ info.battery_serial }}</td></tr>
     <tr><td>Química</td><td>{{ info.battery_chemistry }}</td></tr>
-    <tr><td>Capacidad de diseño</td><td>{{ info.design_capacity }}</td></tr>
-    <tr><td>Capacidad de carga completa</td><td>{{ info.full_charge_capacity }}</td></tr>
+    <tr><td>Capacidad de diseño</td><td>{{ info.design_capacity }} mWh</td></tr>
+    <tr><td>Capacidad de carga completa</td><td>{{ info.full_charge_capacity }} mWh</td></tr>
     <tr><td>Conteo de ciclos</td><td>{{ info.cycle_count }}</td></tr>
   </table>
 
+  <h2>Salud de la Batería</h2>
+  <div class="bar-container">
+    <div class="bar" style="width: {{ info.health_percent }}%;">{{ info.health_percent }}%</div>
+  </div>
+
   <div class="highlight">
-    ⚠️ <strong>Atención:</strong> Revisa el conteo de ciclos y capacidad actual. Si hay pérdida significativa, considera reemplazo.
+    <p><strong>Recomendación:</strong> {{ info.recommendation }}</p>
+    <p>{{ info.estimated_life }}</p>
   </div>
 
   <div class="summary">
     <h2>Resumen</h2>
-    <p>Este análisis resume el estado de salud de la batería y el equipo. Puedes usar este reporte como respaldo técnico o para diagnóstico con soporte.</p>
+    <p>Este análisis resume el estado de salud de la batería y del equipo. Puedes usar este reporte como respaldo técnico o para diagnóstico con soporte.</p>
   </div>
 </body>
 </html>

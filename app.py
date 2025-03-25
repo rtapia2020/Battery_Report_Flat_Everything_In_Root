@@ -27,10 +27,13 @@ def analizar_reporte(ruta_archivo):
         "battery_name": "",
         "battery_manufacturer": "",
         "battery_serial": "",
-        "battery_chemistry": ""
+        "battery_chemistry": "",
+        "battery_health": "",
+        "recommendation": "",
+        "estimated_life": "",
+        "health_percent": 0
     }
 
-    # Info general
     tables = soup.find_all("table")
     if len(tables) > 0:
         rows = tables[0].find_all("tr")
@@ -54,7 +57,6 @@ def analizar_reporte(ruta_archivo):
                 elif "report time" in label:
                     info["report_time"] = value
 
-    # Installed battery info
     if len(tables) > 1:
         rows = tables[1].find_all("tr")
         for row in rows:
@@ -71,11 +73,38 @@ def analizar_reporte(ruta_archivo):
                 elif "chemistry" in label:
                     info["battery_chemistry"] = value
                 elif "design capacity" in label:
-                    info["design_capacity"] = value
+                    info["design_capacity"] = value.replace(",", "").replace(" mWh", "")
                 elif "full charge capacity" in label:
-                    info["full_charge_capacity"] = value
+                    info["full_charge_capacity"] = value.replace(",", "").replace(" mWh", "")
                 elif "cycle count" in label:
                     info["cycle_count"] = value
+
+    # Cálculo de porcentaje de salud
+    try:
+        design = int(info["design_capacity"])
+        full = int(info["full_charge_capacity"])
+        info["health_percent"] = int((full / design) * 100)
+    except:
+        info["health_percent"] = 0
+
+    # Recomendación
+    health = info["health_percent"]
+    if health >= 90:
+        info["recommendation"] = "✅ La batería está en buen estado. No se recomienda cambio."
+    elif health >= 70:
+        info["recommendation"] = "⚠️ La batería ha perdido capacidad. Considerar reemplazo pronto."
+    else:
+        info["recommendation"] = "❌ La batería está degradada. Se recomienda cambio."
+
+    # Estimación de vida útil restante
+    try:
+        ciclos_actuales = int(info["cycle_count"])
+        vida_util_estimada = 500
+        ciclos_restantes = vida_util_estimada - ciclos_actuales
+        meses_restantes = max(1, round(ciclos_restantes / 30, 1))  # Asumimos 30 ciclos por mes
+        info["estimated_life"] = f"⏳ Se estima que la batería tendrá un rendimiento aceptable durante aproximadamente {meses_restantes} meses más."
+    except:
+        info["estimated_life"] = "⏳ No se pudo calcular una estimación de vida útil por falta de datos."
 
     return info
 
